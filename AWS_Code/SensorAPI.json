@@ -1,0 +1,136 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Sensor API",
+      "description": "This API supports the creation and retrieval of a Sensor Object.",
+      "contact": {
+        "email": ""
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.0"
+    },
+    "tags": [
+      {
+        "name": "admins",
+        "description": "Secured Admin-only calls"
+      },
+      {
+        "name": "developers",
+        "description": "Operations available to regular developers"
+      }
+    ],
+    "paths": {
+      "/sensor": {
+        "get": {
+          "tags": [
+            "developers"
+          ],
+          "summary": "Find sensor by ID",
+          "description": "Returns the matching sensor object",
+          "operationId": "findsensor",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "description": "ID of the sensor to return",
+              "required": true,
+              "style": "form",
+              "explode": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "sensor object matching criteria",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/sensor"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid ID supplied"
+            },
+            "404": {
+              "description": "sensor not found"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "developers"
+          ],
+          "summary": "Adds a sensor with form data",
+          "description": "Adds an sensor object to the system",
+          "operationId": "addsensor",
+          "requestBody": {
+            "description": "sensor to add",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/sensor"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "sensor object created",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/sensor"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "invalid input, object invalid"
+            },
+            "409": {
+              "description": "an existing sensor already exists"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "sensor": {
+          "required": [
+            "date",
+            "data",
+            "time",
+            "sensorname"     
+          ],
+          "type": "object",
+          "properties": {
+            "sensorname": {
+              "type": "string",
+              "example": "temperature"
+            },
+            "data": {
+              "type": "string",
+              "example": "1"
+            },
+            "time": {
+              "type": "string",
+              "example": "6:00PM"
+            },
+            "date": {
+              "type": "string",
+              "format": "date",
+              "example": "2012-05-15"
+            }
+          }
+        }
+      }
+    }
+  }
